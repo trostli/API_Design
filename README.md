@@ -5,5 +5,6 @@
 - To run the HTTP version:
     ```
     bundle install
-    shotgun
+    rackup --env production config.ru
     ```
+

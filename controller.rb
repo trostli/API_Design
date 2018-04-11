@@ -1,4 +1,3 @@
-@@db = FakeDB.instance
 
 before do
   content_type :json
@@ -11,7 +10,7 @@ end
 post '/sign_up' do
   email = params["email"]
   if User.create(email)
-    { success: "created user with email #{email}" }.to_json
+    return { success: "created user with email #{email}" }.to_json
   end
 end
 
@@ -24,19 +23,19 @@ end
 post '/create_post' do
   post = Post.create(params["text"])
   if post
-    { success: "created post with ID #{@@db.posts.length - 1}", post: post.user.email }.to_json
+    { success: "created post with ID #{$db.posts.length - 1}", post: post.user.email }.to_json
   end
 end
 
 get '/list_posts' do
   posts = Post.get_posts
-  { posts: posts }.to_json
+  { posts: posts.map { |post| { id: post.id, text: post.text } } }.to_json
 end
 
 post '/edit_post/:id/' do
   id = params["id"]
   new_text = params["text"]
-  post = @@db.posts[id]
+  post = $db.posts[id]
   post.edit(new_text)
   { sucess: 'edited' }.to_json
 end

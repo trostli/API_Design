@@ -10,8 +10,6 @@ class Post
     attr_reader :user
     attr_accessor :text, :id
 
-    @@db = FakeDB.instance
-
     def initialize(id, text, user, created_at)
         @id = id
         @text = text
@@ -20,18 +18,18 @@ class Post
     end
 
     def self.create(text)
-        id = @@db.posts.length - 1
-        post = Post.new(id, text, @@db.current_user, Time.now)
-        @@db.posts.push(post)
+        id = $db.posts.length
+        post = Post.new(id, text, $db.current_user, Time.now)
+        $db.posts.push(post)
         return post
     end
 
     def self.get_posts
-        @@db.posts.reverse
+        $db.posts.reverse
     end
 
     def self.delete(id)
-        @@db.posts.slice!(id)
+        $db.posts.slice!(id)
     end
 
     def edit(new_text)

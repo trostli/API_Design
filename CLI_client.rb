@@ -4,8 +4,6 @@ require_relative './models/post'
 
 class CLIClient
 
-    @@db = FakeDB.instance
-
     def greet
         puts "Welcome to BLOBOSPHERE"
         puts "type help to see available commands"
@@ -25,13 +23,13 @@ class CLIClient
         when 'create-post'
             post = Post.create(command_arguments[1..-1].join(' '))
             if post
-                puts "Created post with ID #{@@db.posts.length - 1}"
+                puts "Created post with ID #{$db.posts.length - 1}"
             else
                 puts "Error creating post"
             end
         when 'edit-post'
             idx = command_arguments[1].to_i
-            post = @@db.posts[idx]
+            post = $db.posts[idx]
             puts "Text: " + post.text
             puts "Enter new text"
             new_text = gets.chomp
@@ -43,7 +41,7 @@ class CLIClient
             end
         when 'help'
             puts "Available commands:"
-            if @@db.current_user
+            if $db.current_user
                 puts "list-posts"
                 puts "create-post <text>"
                 puts "edit-post <id>"
